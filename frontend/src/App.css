@@ -1,0 +1,476 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400;1,600&family=DM+Mono:wght@400;500&display=swap');
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOKENS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@theme {
+  --color-chassis:   #0f0e0b;
+  --color-surface:   #1c1b16;
+  --color-plate:     #232218;
+  --color-edge:      #2e2c24;
+  --color-groove:    #3d3b30;
+  --color-amber:     #F0A500;
+  --color-amber-dim: #b87d00;
+  --color-amber-low: #f0a50018;
+  --color-type:      #c4bfb0;
+  --color-muted:     #605e52;
+  --color-dim:       #3a3830;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.coral-page {
+  min-height: 100vh;
+  background-color: var(--color-chassis);
+  font-family: 'DM Mono', 'Courier New', monospace;
+  color: var(--color-type);
+  position: relative;
+  isolation: isolate;
+}
+
+/* subtle texture — matte chassis surface */
+.coral-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.008) 2px,
+      rgba(255,255,255,0.008) 3px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* amber safelight pool — faint, top-center, like a darkroom ceiling */
+.coral-page::after {
+  content: '';
+  position: fixed;
+  top: -30vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 70vh;
+  background: radial-gradient(ellipse, #f0a50007 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CONTAINER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.coral-container {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TYPOGRAPHY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+h1, h2, h3, .display-font {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: var(--color-type);
+  line-height: 1.1;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MAIN CARD — camera body chassis
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.coral-card {
+  background: var(--color-surface);
+  border-radius: 4px;
+  border: 1px solid var(--color-edge);
+  box-shadow:
+    0 0 0 1px var(--color-plate) inset,
+    0 24px 64px rgba(0,0,0,0.7),
+    0 4px 12px rgba(0,0,0,0.5);
+  overflow: hidden;
+  position: relative;
+}
+
+/* engraved top rule */
+.coral-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-amber-dim) 30%,
+    var(--color-amber) 50%,
+    var(--color-amber-dim) 70%,
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   VIEWFINDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.viewfinder {
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+  outline: 1px solid var(--color-edge);
+  outline-offset: 3px;
+}
+
+/* rangefinder brackets — amber, precise */
+.viewfinder::before,
+.viewfinder::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--color-amber);
+  border-style: solid;
+  opacity: 0.5;
+  z-index: 2;
+  transition: opacity 0.4s ease, width 0.3s ease, height 0.3s ease;
+}
+
+.viewfinder:hover::before,
+.viewfinder:hover::after {
+  opacity: 1;
+  width: 22px;
+  height: 22px;
+}
+
+.viewfinder::before {
+  top: 12px; left: 12px;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.viewfinder::after {
+  bottom: 12px; right: 12px;
+  border-width: 0 1.5px 1.5px 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BUTTON — the shutter
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.coral-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 11px 36px;
+  border-radius: 2px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-chassis);
+  background: var(--color-amber);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow:
+    0 2px 0 var(--color-amber-dim),
+    0 6px 24px rgba(240,165,0,0.25);
+}
+
+/* mechanical press depth */
+.coral-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.coral-button:hover {
+  background: #f5b020;
+  box-shadow:
+    0 2px 0 var(--color-amber-dim),
+    0 10px 36px rgba(240,165,0,0.38);
+  transform: translateY(-1px);
+}
+
+.coral-button:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 0px 0 var(--color-amber-dim),
+    0 2px 8px rgba(240,165,0,0.2);
+  background: var(--color-amber-dim);
+}
+
+/* ghost variant */
+.coral-button--ghost {
+  background: transparent;
+  color: var(--color-muted);
+  border: 1px solid var(--color-groove);
+  box-shadow: none;
+}
+
+.coral-button--ghost::after { display: none; }
+
+.coral-button--ghost:hover {
+  border-color: var(--color-amber);
+  color: var(--color-amber);
+  background: var(--color-amber-low);
+  box-shadow: none;
+  transform: none;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   THEME / FILTER PICKER — selector dial
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.picker-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px;
+  background: var(--color-plate);
+  border: 1px solid var(--color-edge);
+  border-radius: 3px;
+  padding: 3px;
+}
+
+.picker-btn {
+  padding: 7px 20px;
+  border-radius: 2px;
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.picker-btn:hover {
+  color: var(--color-type);
+  background: var(--color-dim);
+}
+
+.picker-btn.active {
+  background: var(--color-amber);
+  color: var(--color-chassis);
+  font-weight: 500;
+}
+
+.image-wrapper {
+  display: inline-block;
+}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FILTERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.filter-coral  { filter: sepia(0.2) saturate(1.5) contrast(1.08) brightness(0.98); }
+.filter-ocean  { filter: hue-rotate(185deg) saturate(1.1) brightness(0.95); }
+.filter-retro  { filter: sepia(0.65) brightness(1.04) contrast(0.88) saturate(0.75); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   POLAROID — contact print on matte paper
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.polaroid-card {
+  background: #19180f;
+  padding: 12px 12px 44px;
+  border-radius: 1px;
+  border: 1px solid #2a2820;
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.5),
+    0 16px 48px rgba(0,0,0,0.65);
+  position: relative;
+  transform: rotate(-1deg);
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1),
+    box-shadow 0.35s ease;
+}
+
+.polaroid-card:nth-child(even) {
+  transform: rotate(0.6deg);
+}
+
+.polaroid-card:hover {
+  transform: rotate(0deg) translateY(-8px);
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.4),
+    0 28px 64px rgba(0,0,0,0.75),
+    0 0 0 1px var(--color-amber-dim) inset;
+}
+
+.polaroid-image,
+.polaroid-finalimage {
+  width: 320px;
+  display: block;
+}
+
+.polaroid-finalimage { margin-bottom: 0; }
+
+.polaroid-info {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.polaroid-info h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--color-type);
+  letter-spacing: 0.03em;
+}
+
+.polaroid-info p {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--color-muted);
+  margin-top: 4px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.polaroid-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.download-row {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FILM STRIP  (wrap your photo row with this)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.film-strip {
+  position: relative;
+  background: var(--color-chassis);
+  padding: 8px 24px;
+}
+
+.film-strip::before,
+.film-strip::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 20px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 5px,
+    var(--color-plate) 5px,
+    var(--color-plate) 16px,
+    transparent 16px,
+    transparent 22px
+  );
+  background-size: 100% 22px;
+}
+
+.film-strip::before { left: 0; }
+.film-strip::after  { right: 0; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DEVELOPING ANIMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes develop {
+  0%   { filter: brightness(0); opacity: 0.2; }
+  30%  { filter: brightness(0.3) sepia(1) hue-rotate(160deg); opacity: 0.6; }
+  65%  { filter: brightness(0.75) sepia(0.3); opacity: 0.9; }
+  100% { filter: brightness(1) sepia(0); opacity: 1; }
+}
+
+.photo-developing {
+  animation: develop 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SHUTTER FLASH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes shutter-flash {
+  0%   { opacity: 0; }
+  5%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.flash-overlay {
+  position: fixed;
+  inset: 0;
+  background: #fff8e8;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  animation: shutter-flash 0.55s ease-out forwards;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   COUNTDOWN — LCD readout
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes lcd-in {
+  0%   { opacity: 0; transform: scale(1.08); letter-spacing: 0.4em; }
+  60%  { opacity: 1; transform: scale(1); letter-spacing: 0.15em; }
+  100% { opacity: 1; transform: scale(1); letter-spacing: 0.15em; }
+}
+
+.countdown-number {
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  font-size: clamp(5rem, 18vw, 9rem);
+  color: var(--color-amber);
+  letter-spacing: 0.15em;
+  animation: lcd-in 0.4s ease-out forwards;
+  line-height: 1;
+  text-shadow:
+    0 0 40px rgba(240,165,0,0.5),
+    0 0 80px rgba(240,165,0,0.2);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RECORDING INDICATOR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes amber-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.25; }
+}
+
+.recording-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--color-amber);
+  display: inline-block;
+  animation: amber-pulse 1.6s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(240,165,0,0.6);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCROLLBAR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-chassis); }
+::-webkit-scrollbar-thumb { background: var(--color-groove); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-amber); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   REDUCED MOTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (prefers-reduced-motion: reduce) {
+  .polaroid-card,
+  .coral-button,
+  .flash-overlay,
+  .countdown-number,
+  .photo-developing,
+  .recording-dot { animation: none; transition: none; }
+}
