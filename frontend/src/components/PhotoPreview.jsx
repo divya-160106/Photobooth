@@ -3,6 +3,7 @@ import { toPng } from "html-to-image";
 import { useRef, useState } from "react";
 import QRCode from "qrcode"
 
+const API_URL = import.meta.env.VITE_API_URL;
 function PhotoPreview({
   photos,
   selectedTheme,
@@ -32,7 +33,7 @@ const handleSave = async () => {
     cacheBust: true,
   });
   try {
-    const res = await fetch("http://192.168.31.102:5000/upload", {
+    const res = await fetch(`${API_URL}/upload`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ image: dataUrl }),
